@@ -1,6 +1,7 @@
 #[cfg(test)]
 mod test; 
 
+mod constants;
 use std::io;
 
 fn main() {
@@ -14,7 +15,7 @@ fn main() {
     println!("Number of Sessions: {}", sessions);
 }
 
-fn get_value(prompt: String, default: i8) -> i8 {
+fn get_value(prompt: &str, default: i8) -> i8 {
     let mut buffer: String = String::new();
     let return_value: i8;
     println!("{}", prompt);
@@ -33,12 +34,9 @@ fn get_value(prompt: String, default: i8) -> i8 {
 }
 
 fn input_mask() -> (i8, i8, i8) {
-    let work_block_prompt: String = "Set work block duration:".to_owned();
-    let break_block_prompt: String = "Set break duration:".to_owned();
-    let num_sessions_prompt: String = "Set number of sessions:".to_owned();
-    let dur_work_block: i8 = get_value(work_block_prompt, 25);
-    let dur_break_block: i8 = get_value(break_block_prompt, 5);
-    let num_sessions: i8 = get_value(num_sessions_prompt, 4);
+    let dur_work_block: i8 = get_value(constants::WORK_BLOCK_PROMPT, 25);
+    let dur_break_block: i8 = get_value(constants::BREAK_BLOCK_PROMPT, 5);
+    let num_sessions: i8 = get_value(constants::NUM_SESSIONS_PROMPT, 4);
 
     return (dur_work_block, dur_break_block, num_sessions);
 }
