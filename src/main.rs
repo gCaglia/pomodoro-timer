@@ -3,21 +3,34 @@ mod test;
 
 mod constants;
 mod timer;
+mod sound_player;
+
+use std::io;
+use std::fs::File;
 use crate::constants::{WORK_BLOCK_PROMPT, BREAK_BLOCK_PROMPT, NUM_SESSIONS_PROMPT};
 use crate::timer::start_timer;
-use std::io;
+use crate::sound_player::{SoundsLibrary, Player};
 
 fn main() {
     let work_dur: u64;
     let break_dur: u64;
     let sessions: u64;
     (work_dur, break_dur, sessions) = input_mask();
-    for _ in 0..sessions {
+    let mut work_sound_file: File;
+    let mut library: SoundsLibrary;
+    for session in 1..(sessions + 1) {
+        // Prepare work sound
+        work_sound_file = SoundsLibrary::open_file();
+        library = SoundsLibrary::set_sounds(work_sound_file);
+
         // Start Work Timer
+        library.play_sound();
         start_timer(work_dur as f64, true);
 
-        // Start Break Timer
-        start_timer(break_dur as f64, true);
+        // Start Break Timer if not on last session
+        if session + 1 < session {
+            start_timer(break_dur as f64, true);
+        }
     }
 }
 
